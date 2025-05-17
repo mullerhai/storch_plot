@@ -97,11 +97,11 @@ case class ContinuousAxisDescriptor(
     else 0
   }
 
-  lazy val values: Seq[Double] = (0 until numTicks).map { i =>
+  val values: Seq[Double] = (0 until numTicks).map { i =>
     axisBounds.min + i * spacing
   }
 
-  lazy val labels: Seq[String] = values.map { value =>
+  val labels: Seq[String] = values.map { value =>
     createNumericLabel(value, numFrac)
   }
 }

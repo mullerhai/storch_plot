@@ -41,9 +41,9 @@ import com.cibo.evilplot.plot.renderers._
 
 object CartesianPlot {
 
-  type ContextToDrawable[T <: Datum2d[T] with Point] = CartesianDataComposer[T] => PlotContext => PlotRenderer
+  type ContextToDrawable[T <: Datum2d[T]] = CartesianDataComposer[T] => PlotContext => PlotRenderer
 
-  def apply[T <: Datum2d[T] with Point](
+  def apply[T <: Datum2d[T]](
     data: Seq[T],
     xboundBuffer: Option[Double] = None,
     yboundBuffer: Option[Double] = None,
@@ -68,7 +68,7 @@ object CartesianPlot {
   }
 }
 
-case class CartesianDataComposer[T <: Datum2d[T] with Point](data: Seq[T], pathInteractions: Seq[InteractionEvent] = Seq()) {
+case class CartesianDataComposer[T <: Datum2d[T]](data: Seq[T], pathInteractions: Seq[InteractionEvent] = Seq()) {
 
   def manipulate(x: Seq[T] => Seq[T]): CartesianDataComposer[T] = this.copy( data = x(data))
 

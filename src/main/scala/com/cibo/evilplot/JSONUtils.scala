@@ -37,10 +37,14 @@ import io.circe.{Decoder, Encoder, Error}
 
 object JSONUtils {
   // This should only be used for colors, drawables, and extents.
-  private[evilplot] implicit val minifyProperties: Configuration = Configuration.default.copy(
+  private[evilplot]  val minifyProperties: Configuration = Configuration.default.copy(
     transformMemberNames = s => s.take(2).toString,
     transformConstructorNames = shortenedName
   )
+//  private[evilplot] implicit val minifyProperties: Configuration = Configuration.default.copy(
+//    transformMemberNames = s => s.take(2).toString,
+//    transformConstructorNames = shortenedName
+//  )
 
   // scalastyle:off
   private def shortenedName(s: String): String = {

@@ -91,7 +91,7 @@ object PathRenderer {
       lineStyle
     )
 
-  protected[evilplot] def polygonForFill[T <: Datum2d[T] with Point](linePoints: Seq[T], plotctx: PlotContext, fillToY: Option[Double]): Drawable = {
+  protected[evilplot] def polygonForFill[T <: Datum2d[T]](linePoints: Seq[T], plotctx: PlotContext, fillToY: Option[Double]): Drawable = {
     val minX = plotctx.xCartesianTransform(plotctx.xBounds.min)
     val minY = plotctx.yCartesianTransform(fillToY.getOrElse(plotctx.yBounds.min))
     val maxX = plotctx.xCartesianTransform(plotctx.xBounds.max)
@@ -160,7 +160,7 @@ object PathRenderer {
     })
   }
 
-  def filledGradient[T <: Datum2d[T] with Point](fill: PlotContext => Gradient2d, lineColor: Option[Color], fillToY: Option[Double] = None): PathRenderer[T] = {
+  def filledGradient[T <: Datum2d[T]](fill: PlotContext => Gradient2d, lineColor: Option[Color], fillToY: Option[Double] = None): PathRenderer[T] = {
     PathRenderer.custom[T]({ (plotctx, seq) =>
 
       GradientFill(
@@ -170,7 +170,7 @@ object PathRenderer {
     })
   }
 
-  def filled[T <: Datum2d[T] with Point](fill: Color, lineColor: Option[Color] = None, fillToY: Option[Double] = None): PathRenderer[T] = {
+  def filled[T <: Datum2d[T]](fill: Color, lineColor: Option[Color] = None, fillToY: Option[Double] = None): PathRenderer[T] = {
     PathRenderer.custom[T]({ (plotctx, seq) =>
 
       Style(

@@ -56,8 +56,8 @@ case class Extent(width: Double, height: Double) {
 
 object Extent {
   private implicit val cfg: Configuration = JSONUtils.minifyProperties
-  implicit val extentEncoder: Encoder[Extent] =
-    io.circe.generic.extras.semiauto.deriveConfiguredEncoder[Extent]
-  implicit val extentDecoder: Decoder[Extent] =
-    io.circe.generic.extras.semiauto.deriveConfiguredDecoder[Extent]
+  implicit val extentEncoder: Encoder[Extent] = Encoder[Extent]
+//    io.circe.generic.extras.semiauto.deriveConfiguredEncoder[Extent]
+  implicit val extentDecoder: Decoder[Extent] = Decoder[Extent]
+//    io.circe.generic.extras.semiauto.deriveConfiguredDecoder[Extent]
 }

@@ -149,8 +149,8 @@ object HEX {
 
 object Color {
   private implicit val cfg: Configuration = com.cibo.evilplot.JSONUtils.minifyProperties
-  implicit val encoder: Encoder[Color] = io.circe.generic.extras.semiauto.deriveConfiguredEncoder[Color]
-  implicit val decoder: Decoder[Color] = io.circe.generic.extras.semiauto.deriveConfiguredDecoder[Color]
+  implicit val encoder: Encoder[Color] = Encoder[Color] // io.circe.generic.extras.semiauto.deriveConfiguredEncoder[Color]
+  implicit val decoder: Decoder[Color] = Decoder[Color] //io.circe.generic.extras.semiauto.deriveConfiguredDecoder[Color]
 
   def stream: Seq[Color] = {
     val hueSpan = 7

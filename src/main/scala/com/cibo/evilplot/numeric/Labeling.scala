@@ -279,7 +279,7 @@ object Labeling {
     val numTicks: Int = nticks
     val axisBounds: Bounds = bs
 
-    lazy val values: Seq[Double] = {
+    val values: Seq[Double] = {
       if (nticks == 0) Seq()
       else if (nticks == 1) Seq((bs.min + bs.max) / 2)
       else if (nticks == 2) Seq(bs.min, bs.max)
@@ -290,7 +290,7 @@ object Labeling {
       }
     }
     private lazy val format: Double => String = formatter.getOrElse(_.toString)
-    lazy val labels: Seq[String] = values.map(format)
+    val labels: Seq[String] = values.map(format)
   }
 
   private[numeric] case class LabelingResult(
@@ -308,11 +308,12 @@ object Labeling {
       AxisDescriptor.createNumericLabel(_, precisionForBase(spacing) + precisionBump)
     }
 
-    lazy val labels: Seq[String] = {
+   val labels: Seq[String] = {
+      println(s"value maybe is null ,please wait ${values.length}")
       values.map(format)
     }
 
-    lazy val values: Seq[Double] = Seq.tabulate(numTicks)(i => spacing * i + labelBounds.min)
+   val values: Seq[Double] = Seq.tabulate(numTicks)(i => spacing * i + labelBounds.min)
   }
 
   @inline private def simplicity(i: Double, niceCount: Int, v: Double): Double =
