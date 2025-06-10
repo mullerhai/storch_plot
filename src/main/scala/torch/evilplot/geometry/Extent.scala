@@ -28,40 +28,36 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.scalatest.funspec.AnyFunSpec
-import org.scalatest.matchers.should.Matchers
-import torch.evilplot.numeric.Point
-import torch.evilplot.plot.ScatterPlot
+package torch.evilplot.geometry
 
-class ScatterPlotSpec extends AnyFunSpec with Matchers {
+import io.circe.generic.extras.Configuration
+import io.circe.{Decoder, Encoder}
+import torch.evilplot.JSONUtils
+import torch.evilplot.numeric.Point2d
 
-  describe("ScatterPlot") {
-    it("sets adheres to bound buffers") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data, xBoundBuffer = Some(0.1), yBoundBuffer = Some(0.1))
+/**
+  * Extent defines an object's rectangular bounding box.
+  * As discussed in <a href="http://ozark.hendrix.edu/~yorgey/pub/monoid-pearl.pdf">
+  * "Monoids: Theme and Variations" by Yorgey</a>,
+  * rectangular bounding boxes don't play well with rotation.
+  * We'll eventually need something fancier like the convex hull.
+  *
+  * @param width bounding box width
+  * @param height bounding box height
+  */
+case class Extent(width: Double, height: Double) {
+  def *(scale: Double): Extent = Extent(scale * width, scale * height)
+  def -(w: Double = 0.0, h: Double = 0.0): Extent = Extent(width - w, height - h)
 
-      plot.xbounds.min should be < -1.0
-      plot.xbounds.max should be > 20.0
-      plot.ybounds.min should be < -5.0
-      plot.ybounds.max should be > 10.0
-    }
-
-    it("sets exact bounds without buffering") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data)
-
-      plot.xbounds.min shouldBe -1.0
-      plot.xbounds.max shouldBe 20.0
-      plot.ybounds.min shouldBe -5.0
-      plot.ybounds.max shouldBe 10.0
-    }
-
-    it("sets reasonable bounds with only 1 point") {
-      val plot = ScatterPlot(Seq(Point(2, 3)))
-      plot.xbounds.min shouldBe 2.0 +- 0.0000001
-      plot.xbounds.max shouldBe 2.0 +- 0.0000001
-      plot.ybounds.min shouldBe 3.0 +- 0.0000001
-      plot.ybounds.max shouldBe 3.0 +- 0.0000001
-    }
+  private[evilplot] def contains(p: Point2d): Boolean = {
+    p.x >= 0 && p.x <= width && p.y >= 0 && p.y <= height
   }
+}
+
+object Extent {
+  private implicit val cfg: Configuration = JSONUtils.minifyProperties
+  implicit val extentEncoder: Encoder[Extent] = Encoder[Extent]
+//    io.circe.generic.extras.semiauto.deriveConfiguredEncoder[Extent]
+  implicit val extentDecoder: Decoder[Extent] = Decoder[Extent]
+//    io.circe.generic.extras.semiauto.deriveConfiguredDecoder[Extent]
 }

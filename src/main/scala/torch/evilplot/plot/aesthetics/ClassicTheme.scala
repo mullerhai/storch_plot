@@ -28,40 +28,43 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.scalatest.funspec.AnyFunSpec
-import org.scalatest.matchers.should.Matchers
-import torch.evilplot.numeric.Point
-import torch.evilplot.plot.ScatterPlot
+package torch.evilplot.plot.aesthetics
 
-class ScatterPlotSpec extends AnyFunSpec with Matchers {
+import DefaultTheme.{DefaultColors, DefaultElements, DefaultFonts}
+import torch.evilplot.colors.{Color, HSL, HTMLNamedColors, RGB}
 
-  describe("ScatterPlot") {
-    it("sets adheres to bound buffers") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data, xBoundBuffer = Some(0.1), yBoundBuffer = Some(0.1))
+object ClassicTheme {
+  val ClassicColors: Colors = DefaultColors.copy(
+    background = HSL(0, 0, 92),
+    frame = RGB(30, 30, 30),
+    bar = HSL(0, 0, 35),
+    fill = HTMLNamedColors.white,
+    path = HSL(0, 0, 0),
+    point = HSL(0, 0, 35),
+    gridLine = HTMLNamedColors.white,
+    trendLine = HSL(0, 0, 35),
+    title = HTMLNamedColors.black,
+    label = HTMLNamedColors.black,
+    annotation = HTMLNamedColors.black,
+    legendLabel = HTMLNamedColors.black,
+    tickLabel = HTMLNamedColors.black,
+    stream = Color.stream
+  )
 
-      plot.xbounds.min should be < -1.0
-      plot.xbounds.max should be > 20.0
-      plot.ybounds.min should be < -5.0
-      plot.ybounds.max should be > 10.0
-    }
+  val ClassicElements: Elements = DefaultElements.copy(
+    pointSize = 2.5,
+    gridLineSize = 1,
+    categoricalXAxisLabelOrientation = 90
+  )
 
-    it("sets exact bounds without buffering") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data)
+  val ClassicFonts: Fonts = DefaultFonts.copy(
+    tickLabelSize = 10,
+    legendLabelSize = 10
+  )
 
-      plot.xbounds.min shouldBe -1.0
-      plot.xbounds.max shouldBe 20.0
-      plot.ybounds.min shouldBe -5.0
-      plot.ybounds.max shouldBe 10.0
-    }
-
-    it("sets reasonable bounds with only 1 point") {
-      val plot = ScatterPlot(Seq(Point(2, 3)))
-      plot.xbounds.min shouldBe 2.0 +- 0.0000001
-      plot.xbounds.max shouldBe 2.0 +- 0.0000001
-      plot.ybounds.min shouldBe 3.0 +- 0.0000001
-      plot.ybounds.max shouldBe 3.0 +- 0.0000001
-    }
-  }
+  implicit val classicTheme: Theme = Theme(
+    colors = ClassicColors,
+    elements = ClassicElements,
+    fonts = ClassicFonts
+  )
 }

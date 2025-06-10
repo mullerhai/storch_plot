@@ -28,40 +28,48 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package torch.evilplot.plot
+
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
-import torch.evilplot.numeric.Point
-import torch.evilplot.plot.ScatterPlot
+import torch.evilplot.geometry.Extent
+import torch.evilplot.numeric.Bounds
 
-class ScatterPlotSpec extends AnyFunSpec with Matchers {
+class BarChartSpec extends AnyFunSpec with Matchers {
 
-  describe("ScatterPlot") {
-    it("sets adheres to bound buffers") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data, xBoundBuffer = Some(0.1), yBoundBuffer = Some(0.1))
+  import torch.evilplot.plot.aesthetics.DefaultTheme._
 
-      plot.xbounds.min should be < -1.0
-      plot.xbounds.max should be > 20.0
-      plot.ybounds.min should be < -5.0
-      plot.ybounds.max should be > 10.0
+  describe("BarChart") {
+    it("should have the right bounds without buffer") {
+      val plot = BarChart(Seq[Double](10, 20, 15))
+      plot.xbounds shouldBe Bounds(0, 3)
+      plot.ybounds shouldBe Bounds(10, 20)
     }
 
-    it("sets exact bounds without buffering") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data)
-
-      plot.xbounds.min shouldBe -1.0
-      plot.xbounds.max shouldBe 20.0
-      plot.ybounds.min shouldBe -5.0
-      plot.ybounds.max shouldBe 10.0
+    it("should have the right bounds with buffer") {
+      val plot = BarChart(Seq[Double](10, 20, 15), boundBuffer = Some(.1))
+      plot.xbounds shouldBe Bounds(0, 3)
+      plot.ybounds.min should be < 10.0
+      plot.ybounds.max should be > 20.0
     }
 
-    it("sets reasonable bounds with only 1 point") {
-      val plot = ScatterPlot(Seq(Point(2, 3)))
-      plot.xbounds.min shouldBe 2.0 +- 0.0000001
-      plot.xbounds.max shouldBe 2.0 +- 0.0000001
-      plot.ybounds.min shouldBe 3.0 +- 0.0000001
-      plot.ybounds.max shouldBe 3.0 +- 0.0000001
+    it("should have the right bounds with stacked bars") {
+      val plot =
+        BarChart.stacked(Seq(Seq(10.0, 5), Seq(20.0, 7), Seq(15.0, 0)), boundBuffer = Some(0))
+      plot.xbounds shouldBe Bounds(0, 3)
+      plot.ybounds shouldBe Bounds(15, 27)
+    }
+
+    it("should have the right extents") {
+      val plot = BarChart(Seq(10.0, 20, 15))
+      val extent = Extent(200, 200)
+      plot.render(extent).extent shouldBe extent
+    }
+
+    it("should not explode if there is no data") {
+      val plot = BarChart(Seq.empty)
+      val extent = Extent(200, 300)
+      plot.render(extent).extent shouldBe extent
     }
   }
 }

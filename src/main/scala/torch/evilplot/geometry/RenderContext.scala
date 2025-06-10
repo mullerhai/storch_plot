@@ -28,40 +28,25 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.scalatest.funspec.AnyFunSpec
-import org.scalatest.matchers.should.Matchers
-import torch.evilplot.numeric.Point
-import torch.evilplot.plot.ScatterPlot
+package torch.evilplot.geometry
 
-class ScatterPlotSpec extends AnyFunSpec with Matchers {
-
-  describe("ScatterPlot") {
-    it("sets adheres to bound buffers") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data, xBoundBuffer = Some(0.1), yBoundBuffer = Some(0.1))
-
-      plot.xbounds.min should be < -1.0
-      plot.xbounds.max should be > 20.0
-      plot.ybounds.min should be < -5.0
-      plot.ybounds.max should be > 10.0
-    }
-
-    it("sets exact bounds without buffering") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data)
-
-      plot.xbounds.min shouldBe -1.0
-      plot.xbounds.max shouldBe 20.0
-      plot.ybounds.min shouldBe -5.0
-      plot.ybounds.max shouldBe 10.0
-    }
-
-    it("sets reasonable bounds with only 1 point") {
-      val plot = ScatterPlot(Seq(Point(2, 3)))
-      plot.xbounds.min shouldBe 2.0 +- 0.0000001
-      plot.xbounds.max shouldBe 2.0 +- 0.0000001
-      plot.ybounds.min shouldBe 3.0 +- 0.0000001
-      plot.ybounds.max shouldBe 3.0 +- 0.0000001
-    }
-  }
+trait RenderContext {
+  def draw(line: Line): Unit
+  def draw(path: Path): Unit
+  def draw(polygon: Polygon): Unit
+  def draw(rect: Rect): Unit
+  def draw(rect: BorderRect): Unit
+  def draw(disc: Disc): Unit
+  def draw(wedge: Wedge): Unit
+  def draw(translate: Translate): Unit
+  def draw(affine: Affine): Unit
+  def draw(scale: Scale): Unit
+  def draw(rotate: Rotate): Unit
+  def draw(style: Style): Unit
+  def draw(style: StrokeStyle): Unit
+  def draw(weight: StrokeWeight): Unit
+  def draw(lineDash: LineDash): Unit
+  def draw(text: Text): Unit
+  def draw(gradient: GradientFill): Unit
+  def draw(interaction: Interaction): Unit
 }

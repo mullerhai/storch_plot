@@ -28,40 +28,42 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.scalatest.funspec.AnyFunSpec
-import org.scalatest.matchers.should.Matchers
-import torch.evilplot.numeric.Point
-import torch.evilplot.plot.ScatterPlot
+package torch.evilplot.plot.components
 
-class ScatterPlotSpec extends AnyFunSpec with Matchers {
+import torch.evilplot.geometry._
+import torch.evilplot.plot.Plot
+import torch.evilplot.plot.aesthetics.Theme
 
-  describe("ScatterPlot") {
-    it("sets adheres to bound buffers") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data, xBoundBuffer = Some(0.1), yBoundBuffer = Some(0.1))
+final case class ComponentGroup(
+  position: Position,
+  components: Seq[FacetedPlotComponent] = Seq.empty,
+  override val repeated: Boolean = false
+) extends FacetedPlotComponent {
 
-      plot.xbounds.min should be < -1.0
-      plot.xbounds.max should be > 20.0
-      plot.ybounds.min should be < -5.0
-      plot.ybounds.max should be > 10.0
+  require(
+    components.forall(_.position == position),
+    "All components in a ComponentGroup must use the same Position")
+
+  override def size(plot: Plot): Extent = {
+    val (width, height) = components.foldLeft((0d, 0d)) {
+      case ((maxWidth, maxHeight), component) =>
+        val componentSize = component.size(plot)
+        (math.max(maxWidth, componentSize.width), math.max(maxHeight, componentSize.height))
     }
+    Extent(width, height)
+  }
 
-    it("sets exact bounds without buffering") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data)
-
-      plot.xbounds.min shouldBe -1.0
-      plot.xbounds.max shouldBe 20.0
-      plot.ybounds.min shouldBe -5.0
-      plot.ybounds.max shouldBe 10.0
-    }
-
-    it("sets reasonable bounds with only 1 point") {
-      val plot = ScatterPlot(Seq(Point(2, 3)))
-      plot.xbounds.min shouldBe 2.0 +- 0.0000001
-      plot.xbounds.max shouldBe 2.0 +- 0.0000001
-      plot.ybounds.min shouldBe 3.0 +- 0.0000001
-      plot.ybounds.max shouldBe 3.0 +- 0.0000001
+  def render(plot: Plot, extent: Extent, row: Int, column: Int)(implicit theme: Theme): Drawable = {
+    if (components.isEmpty) {
+      EmptyDrawable()
+    } else {
+      val rendered = components.map(_.render(plot, extent, row, column)(theme))
+      position match {
+        case Position.Top  => Align.bottomSeq(rendered).reduceLeft(_ inFrontOf _)
+        case Position.Left => Align.rightSeq(rendered).reduceLeft(_ inFrontOf _)
+        case _             => rendered.reduceLeft(_ inFrontOf _)
+      }
     }
   }
+
 }

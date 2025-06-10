@@ -28,40 +28,25 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package torch.evilplot.geometry
+
+//import com.cibo.evilplot.DOMInitializer
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
-import torch.evilplot.numeric.Point
-import torch.evilplot.plot.ScatterPlot
 
-class ScatterPlotSpec extends AnyFunSpec with Matchers {
+class TextMetricsSpec extends AnyFunSpec with Matchers {
+//  DOMInitializer.init()
 
-  describe("ScatterPlot") {
-    it("sets adheres to bound buffers") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data, xBoundBuffer = Some(0.1), yBoundBuffer = Some(0.1))
-
-      plot.xbounds.min should be < -1.0
-      plot.xbounds.max should be > 20.0
-      plot.ybounds.min should be < -5.0
-      plot.ybounds.max should be > 10.0
+  // The size depends on the font which can vary from system to system.
+  describe("measure") {
+    it("returns the right size for a small font") {
+      val extent = TextMetrics.measure(Text("test", 5))
+      extent.height shouldBe 5.0 +- 0.1
     }
 
-    it("sets exact bounds without buffering") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data)
-
-      plot.xbounds.min shouldBe -1.0
-      plot.xbounds.max shouldBe 20.0
-      plot.ybounds.min shouldBe -5.0
-      plot.ybounds.max shouldBe 10.0
-    }
-
-    it("sets reasonable bounds with only 1 point") {
-      val plot = ScatterPlot(Seq(Point(2, 3)))
-      plot.xbounds.min shouldBe 2.0 +- 0.0000001
-      plot.xbounds.max shouldBe 2.0 +- 0.0000001
-      plot.ybounds.min shouldBe 3.0 +- 0.0000001
-      plot.ybounds.max shouldBe 3.0 +- 0.0000001
+    it("returns the right size for a large font") {
+      val extent = TextMetrics.measure(Text("test", 64))
+      extent.height shouldBe 64.0 +- 0.1
     }
   }
 }

@@ -28,40 +28,29 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.scalatest.funspec.AnyFunSpec
-import org.scalatest.matchers.should.Matchers
-import torch.evilplot.numeric.Point
-import torch.evilplot.plot.ScatterPlot
+package torch.evilplot.plot.aesthetics
 
-class ScatterPlotSpec extends AnyFunSpec with Matchers {
+import torch.evilplot.geometry.LineStyle
 
-  describe("ScatterPlot") {
-    it("sets adheres to bound buffers") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data, xBoundBuffer = Some(0.1), yBoundBuffer = Some(0.1))
-
-      plot.xbounds.min should be < -1.0
-      plot.xbounds.max should be > 20.0
-      plot.ybounds.min should be < -5.0
-      plot.ybounds.max should be > 10.0
-    }
-
-    it("sets exact bounds without buffering") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data)
-
-      plot.xbounds.min shouldBe -1.0
-      plot.xbounds.max shouldBe 20.0
-      plot.ybounds.min shouldBe -5.0
-      plot.ybounds.max shouldBe 10.0
-    }
-
-    it("sets reasonable bounds with only 1 point") {
-      val plot = ScatterPlot(Seq(Point(2, 3)))
-      plot.xbounds.min shouldBe 2.0 +- 0.0000001
-      plot.xbounds.max shouldBe 2.0 +- 0.0000001
-      plot.ybounds.min shouldBe 3.0 +- 0.0000001
-      plot.ybounds.max shouldBe 3.0 +- 0.0000001
-    }
-  }
-}
+final case class Elements(
+  strokeWidth: Double,
+  lineDashStyle: LineStyle,
+  pointSize: Double,
+  gridLineSize: Double,
+  boxSpacing: Double,
+  barSpacing: Double,
+  clusterSpacing: Double,
+  boundBuffer: Double,
+  contours: Int,
+  categoricalXAxisLabelOrientation: Double,
+  categoricalYAxisLabelOrientation: Double,
+  continuousXAxisLabelOrientation: Double,
+  continuousYAxisLabelOrientation: Double,
+  tickCount: Int,
+  xTickCount: Int,
+  yTickCount: Int,
+  xGridLineCount: Int,
+  yGridLineCount: Int,
+  tickThickness: Double,
+  tickLength: Double
+)

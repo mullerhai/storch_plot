@@ -28,40 +28,21 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.scalatest.funspec.AnyFunSpec
-import org.scalatest.matchers.should.Matchers
-import torch.evilplot.numeric.Point
-import torch.evilplot.plot.ScatterPlot
+package torch.evilplot.plot.components
 
-class ScatterPlotSpec extends AnyFunSpec with Matchers {
+import torch.evilplot.geometry._
+import torch.evilplot.plot.Plot
+import torch.evilplot.plot.aesthetics.Theme
 
-  describe("ScatterPlot") {
-    it("sets adheres to bound buffers") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data, xBoundBuffer = Some(0.1), yBoundBuffer = Some(0.1))
+/** A component that is aligned with the data of a plot (used when all facets are treated identically). */
+trait PlotComponent extends FacetedPlotComponent {
 
-      plot.xbounds.min should be < -1.0
-      plot.xbounds.max should be > 20.0
-      plot.ybounds.min should be < -5.0
-      plot.ybounds.max should be > 10.0
-    }
+  // Render the component (assumes all facets are handled the same way).
+  def render(plot: Plot, extent: Extent)(implicit theme: Theme): Drawable
 
-    it("sets exact bounds without buffering") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data)
-
-      plot.xbounds.min shouldBe -1.0
-      plot.xbounds.max shouldBe 20.0
-      plot.ybounds.min shouldBe -5.0
-      plot.ybounds.max shouldBe 10.0
-    }
-
-    it("sets reasonable bounds with only 1 point") {
-      val plot = ScatterPlot(Seq(Point(2, 3)))
-      plot.xbounds.min shouldBe 2.0 +- 0.0000001
-      plot.xbounds.max shouldBe 2.0 +- 0.0000001
-      plot.ybounds.min shouldBe 3.0 +- 0.0000001
-      plot.ybounds.max shouldBe 3.0 +- 0.0000001
-    }
-  }
+  // Render the component for a particular facet.
+  // This this calls the implementation that ignores facet information.
+  final def render(plot: Plot, extent: Extent, row: Int, column: Int)(
+    implicit theme: Theme): Drawable =
+    render(plot, extent)
 }

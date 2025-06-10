@@ -28,40 +28,28 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package torch.evilplot.plot
+
+import torch.evilplot.numeric.{Bounds, Point}
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
-import torch.evilplot.numeric.Point
-import torch.evilplot.plot.ScatterPlot
+import torch.evilplot.geometry.Extent
 
-class ScatterPlotSpec extends AnyFunSpec with Matchers {
+class ContourPlotSpec extends AnyFunSpec with Matchers {
 
-  describe("ScatterPlot") {
-    it("sets adheres to bound buffers") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data, xBoundBuffer = Some(0.1), yBoundBuffer = Some(0.1))
+  import torch.evilplot.plot.aesthetics.DefaultTheme._
 
-      plot.xbounds.min should be < -1.0
-      plot.xbounds.max should be > 20.0
-      plot.ybounds.min should be < -5.0
-      plot.ybounds.max should be > 10.0
+  describe("ContourPlot") {
+    it("it has the right bounds") {
+      val plot = ContourPlot(Seq(Point(1, 2), Point(3, 4)), boundBuffer = Some(0.0))
+      plot.xbounds shouldBe Bounds(1, 3)
+      plot.ybounds shouldBe Bounds(2, 4)
     }
 
-    it("sets exact bounds without buffering") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data)
-
-      plot.xbounds.min shouldBe -1.0
-      plot.xbounds.max shouldBe 20.0
-      plot.ybounds.min shouldBe -5.0
-      plot.ybounds.max shouldBe 10.0
-    }
-
-    it("sets reasonable bounds with only 1 point") {
-      val plot = ScatterPlot(Seq(Point(2, 3)))
-      plot.xbounds.min shouldBe 2.0 +- 0.0000001
-      plot.xbounds.max shouldBe 2.0 +- 0.0000001
-      plot.ybounds.min shouldBe 3.0 +- 0.0000001
-      plot.ybounds.max shouldBe 3.0 +- 0.0000001
+    it("works with no data") {
+      val plot = ContourPlot(Seq.empty)
+      val extent = Extent(100, 200)
+      plot.render(extent).extent shouldBe extent
     }
   }
 }

@@ -1,14 +1,13 @@
 //import  io.circe.generic.extras.decoding
-import com.cibo.evilplot.colors.*
-import com.cibo.evilplot.geometry.{Align, Disc, Drawable, Extent, LineStyle, LinearGradient, Placeable, Rect, Rotate, SeqPlaceable, Style, Text, Wedge}
-import com.cibo.evilplot.numeric.{Bounds, Datum2d, Point, Point3d}
-import com.cibo.evilplot.plot.aesthetics.DefaultTheme.{DefaultFonts, DefaultTheme}
-import com.cibo.evilplot.plot.aesthetics.Theme
-import com.cibo.evilplot.plot.components.{Legend, Marker, Position}
-import com.cibo.evilplot.plot.renderers.*
-import com.cibo.evilplot.plot.{Bar, BarChart, BinnedPlot, BoxPlot, CartesianPlot, Facets, FunctionPlot, Heatmap, Histogram, LegendContext, LegendStyle, LinePlot, MixedBoundsOverlay, Overlay, PieChart, Plot, PlotContext, ScatterPlot}
-import com.cibo.evilplot.plot.RichPlot
-import com.cibo.evilplot.plot.aesthetics.ClassicTheme.classicTheme
+import torch.evilplot.colors.{ContinuousColoring, HTMLNamedColors}
+import torch.evilplot.geometry.{Align, Disc, Drawable, Extent, LineStyle, LinearGradient, Placeable, Rect, Rotate, SeqPlaceable, Style, Text, Wedge}
+import torch.evilplot.numeric.{Bounds, Datum2d, Point, Point3d}
+import torch.evilplot.plot.aesthetics.DefaultTheme.{DefaultFonts, DefaultTheme}
+import torch.evilplot.plot.components.{Legend, Marker, Position}
+import torch.evilplot.plot.{Bar, BarChart, BinnedPlot, BoxPlot, CartesianPlot, ContourPlot, Facets, FunctionPlot, Heatmap, Histogram, LegendContext, LegendStyle, LinePlot, MixedBoundsOverlay, Overlay, PieChart, Plot, PlotContext, RichPlot, ScatterPlot}
+import torch.evilplot.plot.aesthetics.ClassicTheme.classicTheme
+import torch.evilplot.plot.aesthetics.Theme
+import torch.evilplot.plot.renderers.PointRenderer
 //import com.cibo.evilplot.plot.aesthetics.DefaultTheme.defaultTheme
 import scala.util.Random
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -17,11 +16,9 @@ def main(): Unit =
   //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
   // to see how IntelliJ IDEA suggests fixing it.
   (1 to 5).map(println)
-  import com.cibo.evilplot.colors.HTMLNamedColors.{green, red}
-  import com.cibo.evilplot.geometry.Extent
-  import com.cibo.evilplot.plot._
-  import com.cibo.evilplot.plot.aesthetics.DefaultTheme._
-  import com.cibo.evilplot.plot.renderers.BarRenderer
+  import torch.evilplot.colors.HTMLNamedColors.{green, red}
+  import torch.evilplot.geometry.Extent
+  import torch.evilplot.plot.renderers.BarRenderer
   import scala.util.Random
 
   val plotAreaSize: Extent = Extent(1000, 600)
@@ -38,9 +35,7 @@ def main(): Unit =
 
 //  val plotAreaSize: Extent = Extent(1000, 600)
   Random.setSeed(666L) //evil seed
-  import com.cibo.evilplot.numeric.Point
-  import com.cibo.evilplot.plot._
-  import com.cibo.evilplot.plot.aesthetics.DefaultTheme._
+  import torch.evilplot.numeric.Point
   import scala.util.Random
 
   val datas = Seq.fill(100) (

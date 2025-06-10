@@ -28,40 +28,59 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package torch.evilplot.geometry
+
+//import com.cibo.evilplot.DOMInitializer
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
-import torch.evilplot.numeric.Point
-import torch.evilplot.plot.ScatterPlot
 
-class ScatterPlotSpec extends AnyFunSpec with Matchers {
+class GeometrySpec extends AnyFunSpec with Matchers {
 
-  describe("ScatterPlot") {
-    it("sets adheres to bound buffers") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data, xBoundBuffer = Some(0.1), yBoundBuffer = Some(0.1))
+//  DOMInitializer.init()
 
-      plot.xbounds.min should be < -1.0
-      plot.xbounds.max should be > 20.0
-      plot.ybounds.min should be < -5.0
-      plot.ybounds.max should be > 10.0
+  describe("Geometry") {
+
+    // pick different values so that we can tell if they get swapped
+    val width = 1.0
+    val height = 2.0
+    val length = 3.0
+    val strokeWidth = 4.0
+
+    it("Line extent") {
+      val extent = Line(length, strokeWidth).extent
+      extent shouldEqual Extent(length, strokeWidth)
     }
 
-    it("sets exact bounds without buffering") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data)
-
-      plot.xbounds.min shouldBe -1.0
-      plot.xbounds.max shouldBe 20.0
-      plot.ybounds.min shouldBe -5.0
-      plot.ybounds.max shouldBe 10.0
+    it("Rect extent") {
+      val extent = Rect(width, height).extent
+      extent shouldEqual Extent(width, height)
     }
 
-    it("sets reasonable bounds with only 1 point") {
-      val plot = ScatterPlot(Seq(Point(2, 3)))
-      plot.xbounds.min shouldBe 2.0 +- 0.0000001
-      plot.xbounds.max shouldBe 2.0 +- 0.0000001
-      plot.ybounds.min shouldBe 3.0 +- 0.0000001
-      plot.ybounds.max shouldBe 3.0 +- 0.0000001
+  }
+
+  describe("labels") {
+    class TestContext extends MockRenderContext {
+      var discDrawn: Boolean = false
+      var textDrawn: Boolean = false
+      override def draw(disc: Disc): Unit = discDrawn = true
+      override def draw(text: Text): Unit = textDrawn = true
+      override def draw(translate: Translate): Unit = translate.r.draw(this)
+    }
+
+    it("titled should draw the drawable and text") {
+      val context = new TestContext
+      val d = Disc(5).titled("message")
+      d.draw(context)
+      context.discDrawn shouldBe true
+      context.textDrawn shouldBe true
+    }
+
+    it("labeled should draw the drawable and text") {
+      val context = new TestContext
+      val d = Disc(5).labeled("message")
+      d.draw(context)
+      context.discDrawn shouldBe true
+      context.textDrawn shouldBe true
     }
   }
 }

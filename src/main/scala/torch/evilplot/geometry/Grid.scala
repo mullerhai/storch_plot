@@ -28,40 +28,30 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.scalatest.funspec.AnyFunSpec
-import org.scalatest.matchers.should.Matchers
-import torch.evilplot.numeric.Point
-import torch.evilplot.plot.ScatterPlot
+package torch.evilplot.geometry
 
-class ScatterPlotSpec extends AnyFunSpec with Matchers {
+case class Grid(
+  numRows: Int,
+  numCols: Int,
+  rs: Seq[Drawable],
+  bottomPadding: Double = 0,
+  rightPadding: Double = 0) {
+  // I don't think this is true.
+//  require(rs.length == numRows * numCols, s"must supply a list of ${numRows * numCols} elements")
 
-  describe("ScatterPlot") {
-    it("sets adheres to bound buffers") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data, xBoundBuffer = Some(0.1), yBoundBuffer = Some(0.1))
+  def apply(row: Int)(col: Int): Drawable = rs(index(row, col))
 
-      plot.xbounds.min should be < -1.0
-      plot.xbounds.max should be > 20.0
-      plot.ybounds.min should be < -5.0
-      plot.ybounds.max should be > 10.0
-    }
+  private def index(row: Int, col: Int): Int = row * numCols + col
 
-    it("sets exact bounds without buffering") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data)
-
-      plot.xbounds.min shouldBe -1.0
-      plot.xbounds.max shouldBe 20.0
-      plot.ybounds.min shouldBe -5.0
-      plot.ybounds.max shouldBe 10.0
-    }
-
-    it("sets reasonable bounds with only 1 point") {
-      val plot = ScatterPlot(Seq(Point(2, 3)))
-      plot.xbounds.min shouldBe 2.0 +- 0.0000001
-      plot.xbounds.max shouldBe 2.0 +- 0.0000001
-      plot.ybounds.min shouldBe 3.0 +- 0.0000001
-      plot.ybounds.max shouldBe 3.0 +- 0.0000001
-    }
+  def drawable: Drawable = {
+    rs.grouped(numCols)
+      .map { row =>
+        row.reduce { (a: Drawable, b: Drawable) =>
+          a padRight rightPadding beside b
+        }
+      }
+      .reduce { (a: Drawable, b: Drawable) =>
+        a padBottom bottomPadding above b
+      }
   }
 }

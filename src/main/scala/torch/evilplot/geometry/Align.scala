@@ -28,40 +28,30 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.scalatest.funspec.AnyFunSpec
-import org.scalatest.matchers.should.Matchers
-import torch.evilplot.numeric.Point
-import torch.evilplot.plot.ScatterPlot
+package torch.evilplot.geometry
 
-class ScatterPlotSpec extends AnyFunSpec with Matchers {
-
-  describe("ScatterPlot") {
-    it("sets adheres to bound buffers") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data, xBoundBuffer = Some(0.1), yBoundBuffer = Some(0.1))
-
-      plot.xbounds.min should be < -1.0
-      plot.xbounds.max should be > 20.0
-      plot.ybounds.min should be < -5.0
-      plot.ybounds.max should be > 10.0
-    }
-
-    it("sets exact bounds without buffering") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data)
-
-      plot.xbounds.min shouldBe -1.0
-      plot.xbounds.max shouldBe 20.0
-      plot.ybounds.min shouldBe -5.0
-      plot.ybounds.max shouldBe 10.0
-    }
-
-    it("sets reasonable bounds with only 1 point") {
-      val plot = ScatterPlot(Seq(Point(2, 3)))
-      plot.xbounds.min shouldBe 2.0 +- 0.0000001
-      plot.xbounds.max shouldBe 2.0 +- 0.0000001
-      plot.ybounds.min shouldBe 3.0 +- 0.0000001
-      plot.ybounds.max shouldBe 3.0 +- 0.0000001
-    }
+object Align {
+  def bottomSeq(items: Seq[Drawable]): Seq[Drawable] = {
+    lazy val groupHeight = items.maxBy(_.extent.height).extent.height
+    items.map(r => r.translate(y = groupHeight - r.extent.height))
   }
+  def bottom(items: Drawable*): Seq[Drawable] = bottomSeq(items)
+
+  def centerSeq(items: Seq[Drawable]): Seq[Drawable] = {
+    lazy val groupWidth = items.maxBy(_.extent.width).extent.width
+    items.map(r => r.translate(x = (groupWidth - r.extent.width) / 2.0))
+  }
+  def center(items: Drawable*): Seq[Drawable] = centerSeq(items)
+
+  def rightSeq(items: Seq[Drawable]): Seq[Drawable] = {
+    lazy val groupWidth = items.maxBy(_.extent.width).extent.width
+    items.map(r => r.translate(x = groupWidth - r.extent.width))
+  }
+  def right(items: Drawable*): Seq[Drawable] = rightSeq(items)
+
+  def middleSeq(items: Seq[Drawable]): Seq[Drawable] = {
+    lazy val groupHeight = items.maxBy(_.extent.height).extent.height
+    items.map(r => r.translate(y = (groupHeight - r.extent.height) / 2.0))
+  }
+  def middle(items: Drawable*): Seq[Drawable] = middleSeq(items)
 }

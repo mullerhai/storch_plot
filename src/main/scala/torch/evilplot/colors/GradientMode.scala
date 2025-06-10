@@ -28,40 +28,30 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.scalatest.funspec.AnyFunSpec
-import org.scalatest.matchers.should.Matchers
-import torch.evilplot.numeric.Point
-import torch.evilplot.plot.ScatterPlot
+package torch.evilplot.colors
 
-class ScatterPlotSpec extends AnyFunSpec with Matchers {
+sealed trait GradientMode {
+  private[colors] def forward(d: Double): Double
+  private[colors] def inverse(d: Double): Double
+}
+object GradientMode {
 
-  describe("ScatterPlot") {
-    it("sets adheres to bound buffers") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data, xBoundBuffer = Some(0.1), yBoundBuffer = Some(0.1))
+  /** A "natural" gradient transforms sRGB color to the RGB color space,
+    * in which linear interpolation is performed to generate a gradient before transforming
+    * back to sRGB. This can give better results than a simple linear gradient. */
+  case object Natural extends GradientMode {
+    // https://stackoverflow.com/questions/22607043/color-gradient-algorithm
+    // https://www.w3.org/Graphics/Color/srgb
+    private[colors] def forward(d: Double): Double =
+      if (d <= 0.0031308) d * 12.92 else 1.055 * math.pow(d, 1.0 / 2.4) - 0.055
 
-      plot.xbounds.min should be < -1.0
-      plot.xbounds.max should be > 20.0
-      plot.ybounds.min should be < -5.0
-      plot.ybounds.max should be > 10.0
-    }
+    private[colors] def inverse(d: Double): Double =
+      if (d <= 0.04045) d / 12.92 else math.pow((d + 0.055) / 1.055, 2.4)
+  }
 
-    it("sets exact bounds without buffering") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data)
-
-      plot.xbounds.min shouldBe -1.0
-      plot.xbounds.max shouldBe 20.0
-      plot.ybounds.min shouldBe -5.0
-      plot.ybounds.max shouldBe 10.0
-    }
-
-    it("sets reasonable bounds with only 1 point") {
-      val plot = ScatterPlot(Seq(Point(2, 3)))
-      plot.xbounds.min shouldBe 2.0 +- 0.0000001
-      plot.xbounds.max shouldBe 2.0 +- 0.0000001
-      plot.ybounds.min shouldBe 3.0 +- 0.0000001
-      plot.ybounds.max shouldBe 3.0 +- 0.0000001
-    }
+  /** A simple linear gradient in RGB color space. */
+  case object Linear extends GradientMode {
+    private[colors] def forward(d: Double): Double = d
+    private[colors] def inverse(d: Double): Double = d
   }
 }

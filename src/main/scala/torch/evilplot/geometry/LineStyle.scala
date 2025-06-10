@@ -28,40 +28,34 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.scalatest.funspec.AnyFunSpec
-import org.scalatest.matchers.should.Matchers
-import torch.evilplot.numeric.Point
-import torch.evilplot.plot.ScatterPlot
+package torch.evilplot.geometry
 
-class ScatterPlotSpec extends AnyFunSpec with Matchers {
+import io.circe.{Decoder, Encoder}
+import io.circe.generic.extras.Configuration
+import torch.evilplot.JSONUtils
 
-  describe("ScatterPlot") {
-    it("sets adheres to bound buffers") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data, xBoundBuffer = Some(0.1), yBoundBuffer = Some(0.1))
+/** The stroke pattern of a line.
+ *
+  * @param dashPattern A sequence containing distances between the solid portions of
+  *   the line and the invisible portions. A single value will result in equal-sized opaque
+  *   segments and gaps. An empty list uses a solid line. All values must be positive.
+  * @param offset The "phase" of the dash pattern.
+  */
+final case class LineStyle(
+  dashPattern: Seq[Double] = Seq.empty[Double],
+  offset: Double = 0.0
+) {
+  require(dashPattern.forall(_ > 0), "A dash pattern must only contain positive values.")
+}
+object LineStyle {
+  import io.circe.generic.extras.semiauto._
+  private implicit val jsonConfig: Configuration = JSONUtils.minifyProperties
+  implicit val lineStyleEncoder: Encoder[LineStyle] = Encoder[LineStyle] //deriveConfiguredEncoder[LineStyle]
+  implicit val lineStyleDecoder: Decoder[LineStyle] = Decoder[LineStyle]  //deriveConfiguredDecoder[LineStyle]
 
-      plot.xbounds.min should be < -1.0
-      plot.xbounds.max should be > 20.0
-      plot.ybounds.min should be < -5.0
-      plot.ybounds.max should be > 10.0
-    }
-
-    it("sets exact bounds without buffering") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data)
-
-      plot.xbounds.min shouldBe -1.0
-      plot.xbounds.max shouldBe 20.0
-      plot.ybounds.min shouldBe -5.0
-      plot.ybounds.max shouldBe 10.0
-    }
-
-    it("sets reasonable bounds with only 1 point") {
-      val plot = ScatterPlot(Seq(Point(2, 3)))
-      plot.xbounds.min shouldBe 2.0 +- 0.0000001
-      plot.xbounds.max shouldBe 2.0 +- 0.0000001
-      plot.ybounds.min shouldBe 3.0 +- 0.0000001
-      plot.ybounds.max shouldBe 3.0 +- 0.0000001
-    }
-  }
+  val Solid: LineStyle = LineStyle()
+  val Dotted: LineStyle = LineStyle(Seq(1, 2))
+  val DashDot: LineStyle = LineStyle(Seq(6, 3, 1, 3))
+  val Dashed: LineStyle = LineStyle(Seq(6))
+  def evenlySpaced(dist: Double): LineStyle = LineStyle(Seq(dist))
 }

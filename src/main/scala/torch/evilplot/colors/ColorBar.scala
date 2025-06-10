@@ -28,40 +28,40 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.scalatest.funspec.AnyFunSpec
-import org.scalatest.matchers.should.Matchers
-import torch.evilplot.numeric.Point
-import torch.evilplot.plot.ScatterPlot
+package torch.evilplot.colors
 
-class ScatterPlotSpec extends AnyFunSpec with Matchers {
+import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
+import io.circe.{Decoder, Encoder}
 
-  describe("ScatterPlot") {
-    it("sets adheres to bound buffers") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data, xBoundBuffer = Some(0.1), yBoundBuffer = Some(0.1))
+sealed trait ColorBar {
+  val nColors: Int
+  def getColor(z: Int): Color
+}
 
-      plot.xbounds.min should be < -1.0
-      plot.xbounds.max should be > 20.0
-      plot.ybounds.min should be < -5.0
-      plot.ybounds.max should be > 10.0
-    }
-
-    it("sets exact bounds without buffering") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data)
-
-      plot.xbounds.min shouldBe -1.0
-      plot.xbounds.max shouldBe 20.0
-      plot.ybounds.min shouldBe -5.0
-      plot.ybounds.max shouldBe 10.0
-    }
-
-    it("sets reasonable bounds with only 1 point") {
-      val plot = ScatterPlot(Seq(Point(2, 3)))
-      plot.xbounds.min shouldBe 2.0 +- 0.0000001
-      plot.xbounds.max shouldBe 2.0 +- 0.0000001
-      plot.ybounds.min shouldBe 3.0 +- 0.0000001
-      plot.ybounds.max shouldBe 3.0 +- 0.0000001
-    }
+// Use when one color is wanted but a ColorBar is needed.
+case class SingletonColorBar(color: Color) extends ColorBar {
+  val nColors: Int = 1
+  def getColor(z: Int): Color = {
+    require(z == 1)
+    color
   }
+}
+
+// Map a sequence of colors to a continuous variable z.
+case class ScaledColorBar(colorSeq: Seq[Color], zMin: Double, zMax: Double) extends ColorBar {
+  val nColors: Int = colorSeq.length
+
+  private val zWidth = (zMax - zMin) / nColors.toFloat
+
+  def getColor(i: Int): Color = colorSeq(i)
+  def getColor(z: Double): Color = getColor(colorIndex(z))
+
+  def colorIndex(z: Double): Int =
+    math.min(math.round(math.floor(math.max(z - zMin, 0.0) / zWidth)).toInt, nColors - 1)
+  def colorValue(i: Int): Double = i * zWidth + zMin
+}
+
+object ColorBar {
+  implicit val encoder: Encoder[ColorBar] = deriveEncoder[ColorBar]
+  implicit val decoder: Decoder[ColorBar] = deriveDecoder[ColorBar]
 }

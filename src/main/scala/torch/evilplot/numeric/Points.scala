@@ -28,40 +28,43 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.scalatest.funspec.AnyFunSpec
-import org.scalatest.matchers.should.Matchers
-import torch.evilplot.numeric.Point
-import torch.evilplot.plot.ScatterPlot
+package torch.evilplot.numeric
 
-class ScatterPlotSpec extends AnyFunSpec with Matchers {
+import scala.language.implicitConversions
+import io.circe.{Decoder, Encoder}
+import io.circe.generic.semiauto._
 
-  describe("ScatterPlot") {
-    it("sets adheres to bound buffers") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data, xBoundBuffer = Some(0.1), yBoundBuffer = Some(0.1))
+trait Point2d {
+  val x: Double
+  val y: Double
+  def withXY(x: Double = this.x, y: Double = this.y): Point2d
+}
 
-      plot.xbounds.min should be < -1.0
-      plot.xbounds.max should be > 20.0
-      plot.ybounds.min should be < -5.0
-      plot.ybounds.max should be > 10.0
-    }
+case class Point3d[Z: Numeric](x: Double, y: Double, z: Z) extends Datum2d[Point3d[Z]] {
+  def withXY(x: Double, y: Double): Point3d[Z] = this.copy(x, y, z)
+}
 
-    it("sets exact bounds without buffering") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data)
+trait Datum2d[A <: Datum2d[A]] extends Point2d {
+  val x: Double
+  val y: Double
+  def withXY(x: Double = this.x, y: Double = this.y): A
+}
 
-      plot.xbounds.min shouldBe -1.0
-      plot.xbounds.max shouldBe 20.0
-      plot.ybounds.min shouldBe -5.0
-      plot.ybounds.max shouldBe 10.0
-    }
+final case class Point(x: Double, y: Double) extends Datum2d[Point] {
+  def -(that: Point): Point = Point(x - that.x, y - that.y)
 
-    it("sets reasonable bounds with only 1 point") {
-      val plot = ScatterPlot(Seq(Point(2, 3)))
-      plot.xbounds.min shouldBe 2.0 +- 0.0000001
-      plot.xbounds.max shouldBe 2.0 +- 0.0000001
-      plot.ybounds.min shouldBe 3.0 +- 0.0000001
-      plot.ybounds.max shouldBe 3.0 +- 0.0000001
-    }
-  }
+  def withXY(x: Double = this.x, y: Double = this.y): Point = this.copy(x = x, y = y)
+}
+
+object Point {
+  implicit val encoder: Encoder[Point] = io.circe.generic.semiauto.deriveEncoder[Point]
+  implicit val decoder: Decoder[Point] = io.circe.generic.semiauto.deriveDecoder[Point]
+  def tupled(t: (Double, Double)): Point = Point(t._1, t._2)
+  implicit def toTuple(p: Point): (Double, Double) = (p.x, p.y)
+}
+
+final case class Point3(x: Double, y: Double, z: Double)
+
+object Point3 {
+  def tupled(t: (Double, Double, Double)): Point3 = Point3(t._1, t._2, t._3)
 }

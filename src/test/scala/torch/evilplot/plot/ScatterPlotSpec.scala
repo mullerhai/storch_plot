@@ -28,12 +28,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package torch.evilplot.plot
+
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 import torch.evilplot.numeric.Point
-import torch.evilplot.plot.ScatterPlot
 
 class ScatterPlotSpec extends AnyFunSpec with Matchers {
+
+  import torch.evilplot.plot.aesthetics.DefaultTheme._
 
   describe("ScatterPlot") {
     it("sets adheres to bound buffers") {

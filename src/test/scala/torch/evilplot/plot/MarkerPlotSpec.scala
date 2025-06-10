@@ -28,40 +28,34 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package torch.evilplot.plot
+
+import torch.evilplot.demo.DemoPlots.{plotAreaSize, theme}
+import torch.evilplot.geometry.{Extent, Rect, Rotate, Style, Text, Wedge}
+import torch.evilplot.numeric.{Bounds, Point}
+import torch.evilplot.plot.components.{Marker, Position}
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
-import torch.evilplot.numeric.Point
-import torch.evilplot.plot.ScatterPlot
 
-class ScatterPlotSpec extends AnyFunSpec with Matchers {
+class MarkerPlotSpec extends AnyFunSpec with Matchers {
 
-  describe("ScatterPlot") {
-    it("sets adheres to bound buffers") {
+  describe("Marker Plot") {
+    it("overlay marker displays correctly") {
+      val marker = Marker(Position.Overlay, _ => Rect(25), Extent(25, 25), 0, 0)
       val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data, xBoundBuffer = Some(0.1), yBoundBuffer = Some(0.1))
+      val plot =
+        ScatterPlot(data, xBoundBuffer = Some(0.1), yBoundBuffer = Some(0.1)).component(marker)
 
       plot.xbounds.min should be < -1.0
       plot.xbounds.max should be > 20.0
       plot.ybounds.min should be < -5.0
       plot.ybounds.max should be > 10.0
+      marker.size.height should be < 26.0
+      marker.size.width should be < 26.0
+      marker.x shouldBe 0
+      marker.y shouldBe 0
     }
 
-    it("sets exact bounds without buffering") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data)
-
-      plot.xbounds.min shouldBe -1.0
-      plot.xbounds.max shouldBe 20.0
-      plot.ybounds.min shouldBe -5.0
-      plot.ybounds.max shouldBe 10.0
-    }
-
-    it("sets reasonable bounds with only 1 point") {
-      val plot = ScatterPlot(Seq(Point(2, 3)))
-      plot.xbounds.min shouldBe 2.0 +- 0.0000001
-      plot.xbounds.max shouldBe 2.0 +- 0.0000001
-      plot.ybounds.min shouldBe 3.0 +- 0.0000001
-      plot.ybounds.max shouldBe 3.0 +- 0.0000001
-    }
   }
+
 }

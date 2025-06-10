@@ -28,40 +28,40 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package torch.evilplot.plot
+
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
-import torch.evilplot.numeric.Point
-import torch.evilplot.plot.ScatterPlot
+import torch.evilplot.geometry.Extent
+import torch.evilplot.numeric.Bounds
 
-class ScatterPlotSpec extends AnyFunSpec with Matchers {
+class BoxPlotSpec extends AnyFunSpec with Matchers {
 
-  describe("ScatterPlot") {
-    it("sets adheres to bound buffers") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data, xBoundBuffer = Some(0.1), yBoundBuffer = Some(0.1))
+  import torch.evilplot.plot.aesthetics.DefaultTheme._
 
-      plot.xbounds.min should be < -1.0
-      plot.xbounds.max should be > 20.0
-      plot.ybounds.min should be < -5.0
-      plot.ybounds.max should be > 10.0
+  describe("BoxPlot") {
+    it("should have the right extents") {
+      val plot = BoxPlot(Seq(Seq(1.0, 2.0)))
+      val extent = Extent(100, 200)
+      plot.render(extent).extent shouldBe extent
     }
 
-    it("sets exact bounds without buffering") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data)
-
-      plot.xbounds.min shouldBe -1.0
-      plot.xbounds.max shouldBe 20.0
-      plot.ybounds.min shouldBe -5.0
-      plot.ybounds.max shouldBe 10.0
+    it("should have the right bounds") {
+      val plot = BoxPlot(Seq(Seq(1.0, 2.0)), boundBuffer = Some(0))
+      plot.xbounds shouldBe Bounds(0, 1)
+      plot.ybounds shouldBe Bounds(1, 2)
     }
 
-    it("sets reasonable bounds with only 1 point") {
-      val plot = ScatterPlot(Seq(Point(2, 3)))
-      plot.xbounds.min shouldBe 2.0 +- 0.0000001
-      plot.xbounds.max shouldBe 2.0 +- 0.0000001
-      plot.ybounds.min shouldBe 3.0 +- 0.0000001
-      plot.ybounds.max shouldBe 3.0 +- 0.0000001
+    it("should not explode with no data") {
+      val plot = BoxPlot(Seq.empty)
+      val extent = Extent(200, 200)
+      plot.render(extent).extent shouldBe extent
+    }
+
+    it("should not explode when there is no data for a box") {
+      val plot = BoxPlot(Seq(Seq.empty))
+      val extent = Extent(200, 200)
+      plot.render(extent).extent shouldBe extent
     }
   }
 }

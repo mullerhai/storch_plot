@@ -28,40 +28,32 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package torch.evilplot.plot.renderers
+
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
-import torch.evilplot.numeric.Point
-import torch.evilplot.plot.ScatterPlot
+import torch.evilplot.geometry.LineStyle
 
-class ScatterPlotSpec extends AnyFunSpec with Matchers {
-
-  describe("ScatterPlot") {
-    it("sets adheres to bound buffers") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data, xBoundBuffer = Some(0.1), yBoundBuffer = Some(0.1))
-
-      plot.xbounds.min should be < -1.0
-      plot.xbounds.max should be > 20.0
-      plot.ybounds.min should be < -5.0
-      plot.ybounds.max should be > 10.0
+class PathRendererSpec extends AnyFunSpec with Matchers {
+  describe("Legend stroke lengths") {
+    import LineStyle._
+    import PathRenderer._
+    it("should use the default for a solid style") {
+      calcLegendStrokeLength(Solid) shouldBe baseLegendStrokeLength
     }
 
-    it("sets exact bounds without buffering") {
-      val data = Seq(Point(-1, 10), Point(20, -5))
-      val plot = ScatterPlot(data)
-
-      plot.xbounds.min shouldBe -1.0
-      plot.xbounds.max shouldBe 20.0
-      plot.ybounds.min shouldBe -5.0
-      plot.ybounds.max shouldBe 10.0
+    it("should always return at least the baseLegendStrokeLength") {
+      calcLegendStrokeLength(Dotted) shouldBe 9
+      calcLegendStrokeLength(evenlySpaced(3)) should be >= baseLegendStrokeLength
+      calcLegendStrokeLength(LineStyle(Seq(1, 1))) shouldBe baseLegendStrokeLength
     }
 
-    it("sets reasonable bounds with only 1 point") {
-      val plot = ScatterPlot(Seq(Point(2, 3)))
-      plot.xbounds.min shouldBe 2.0 +- 0.0000001
-      plot.xbounds.max shouldBe 2.0 +- 0.0000001
-      plot.ybounds.min shouldBe 3.0 +- 0.0000001
-      plot.ybounds.max shouldBe 3.0 +- 0.0000001
+    it("should use at least 4x the pattern length with a single element pattern") {
+      calcLegendStrokeLength(evenlySpaced(6)) shouldBe 24
+    }
+
+    it("should use a minimum of 2x the pattern length with a regular element pattern") {
+      calcLegendStrokeLength(DashDot) shouldBe 26
     }
   }
 }
