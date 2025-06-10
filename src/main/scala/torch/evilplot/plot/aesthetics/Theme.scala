@@ -38,7 +38,7 @@ import scala.annotation.implicitNotFound
   * @see [[DefaultTheme.defaultTheme]] for an easy default.
   **/
 @implicitNotFound(
-  "No implicit Theme found. You may wish to import com.cibo.evilplot.plot.aesthetics.DefaultTheme._")
+  "No implicit Theme found. You may wish to import torch.evilplot.plot.aesthetics.DefaultTheme._")
 final case class Theme(
   fonts: Fonts,
   colors: Colors,

@@ -30,7 +30,7 @@
 
 package torch.evilplot.geometry
 
-//import com.cibo.evilplot.DOMInitializer
+//import torch.evilplot.DOMInitializer
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 

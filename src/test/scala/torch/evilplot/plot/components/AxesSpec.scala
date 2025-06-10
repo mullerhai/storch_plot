@@ -30,16 +30,16 @@ package torch.evilplot.plot.components
 // * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // */
 //
-//package com.cibo.evilplot.plot.components
+//package torch.evilplot.plot.components
 //
-//import com.cibo.evilplot.numeric.{Bounds, Point}
-//import com.cibo.evilplot.plot.{Bar, BarChart, ScatterPlot}
+//import torch.evilplot.numeric.{Bounds, Point}
+//import torch.evilplot.plot.{Bar, BarChart, ScatterPlot}
 //import org.scalatest.funspec.AnyFunSpec
 //import org.scalatest.matchers.should.Matchers
 //
 //class AxesSpec extends AnyFunSpec with Matchers {
 //
-//  import com.cibo.evilplot.plot.aesthetics.DefaultTheme._
+//  import torch.evilplot.plot.aesthetics.DefaultTheme._
 //
 //  describe("discrete X") {
 //    it("should set the default bounds") {

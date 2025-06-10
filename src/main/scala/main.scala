@@ -8,7 +8,7 @@ import torch.evilplot.plot.{Bar, BarChart, BinnedPlot, BoxPlot, CartesianPlot, C
 import torch.evilplot.plot.aesthetics.ClassicTheme.classicTheme
 import torch.evilplot.plot.aesthetics.Theme
 import torch.evilplot.plot.renderers.PointRenderer
-//import com.cibo.evilplot.plot.aesthetics.DefaultTheme.defaultTheme
+//import torch.evilplot.plot.aesthetics.DefaultTheme.defaultTheme
 import scala.util.Random
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 @main

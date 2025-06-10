@@ -1,10 +1,10 @@
 //import java.io.File
 //import java.nio.file.{Files, Paths}
-//import com.cibo.evilplot.demo.DemoPlots
-//import com.cibo.evilplot.asBufferedImage
-//import com.cibo.evilplot.write
+//import torch.evilplot.demo.DemoPlots
+//import torch.evilplot.asBufferedImage
+//import torch.evilplot.write
 //import javax.imageio.ImageIO
-//import com.cibo.evilplot.geometry.Drawable
+//import torch.evilplot.geometry.Drawable
 //import org.scalatest.funspec.AnyFunSpec
 //import org.scalatest.matchers.should.Matchers
 //

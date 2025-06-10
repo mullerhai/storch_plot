@@ -31,7 +31,7 @@
 package torch.evilplot.plot
 
 import torch.evilplot.geometry.{Drawable, EmptyDrawable, Extent}
-//import com.cibo.evilplot.DOMInitializer
+//import torch.evilplot.DOMInitializer
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 import torch.evilplot.numeric.Bounds

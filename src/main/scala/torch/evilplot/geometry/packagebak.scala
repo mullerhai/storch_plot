@@ -30,9 +30,9 @@ package torch.evilplot.geometry
 // * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // */
 //
-//package com.cibo.evilplot
+//package torch.evilplot
 //
-//import com.cibo.evilplot.colors.{Color, RGB}
+//import torch.evilplot.colors.{Color, RGB}
 //
 //package geometry:
 //
