@@ -307,13 +307,15 @@ object Labeling {
     private lazy val format: Double => String = formatter.getOrElse {
       AxisDescriptor.createNumericLabel(_, precisionForBase(spacing) + precisionBump)
     }
-
-   val labels: Seq[String] = {
-      println(s"value maybe is null ,please wait ${values.length}")
+    val values = LazyList.tabulate(numTicks)(i => spacing * i + labelBounds.min)
+//: Seq[String]
+   val labels = {
+      println(s"numTicks ${numTicks} spacing ${spacing} labelBounds.min ${labelBounds.min}  labelBounds range ${labelBounds.range }labelBounds.max ${labelBounds.max},")
+      println(s"labels values List length ${values.length} ,element ${values.mkString(" | ")}")
       values.map(format)
     }
+//: Seq[Double]
 
-   val values: Seq[Double] = Seq.tabulate(numTicks)(i => spacing * i + labelBounds.min)
   }
 
   @inline private def simplicity(i: Double, niceCount: Int, v: Double): Double =

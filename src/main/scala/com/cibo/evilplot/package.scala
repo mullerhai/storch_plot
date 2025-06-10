@@ -34,9 +34,9 @@ import java.awt.image.BufferedImage
 
 import com.cibo.evilplot.geometry._
 import javax.imageio.ImageIO
-package object evilplot {
-  implicit class AwtDrawableOps(r: Drawable) {
 
+package evilplot:
+  extension (r: Drawable)
     /** Return a BufferedImage containing the contents of this Drawable. */
     def asBufferedImage: BufferedImage = {
       val scale = 4.0
@@ -55,7 +55,31 @@ package object evilplot {
 
     /** Write a Drawable to a file as a PNG. */
     def write(file: java.io.File): Unit = {
-      ImageIO.write(asBufferedImage, "png", file)
+      ImageIO.write(asBufferedImage, "png", file): Unit
     }
-  }
-}
+    
+//package object evilplot {
+//  implicit class AwtDrawableOps(r: Drawable) {
+//
+//    /** Return a BufferedImage containing the contents of this Drawable. */
+//    def asBufferedImage: BufferedImage = {
+//      val scale = 4.0
+//      val paddingHack = 20
+//      val bi = new BufferedImage(
+//        (r.extent.width * scale.toInt).toInt,
+//        (r.extent.height * scale).toInt,
+//        BufferedImage.TYPE_INT_ARGB)
+//      val gfx = bi.createGraphics()
+//      gfx.scale(scale, scale)
+//      val padded = r.padAll(paddingHack / 2)
+//      fit(padded, r.extent).draw(Graphics2DRenderContext(gfx))
+//      gfx.dispose()
+//      bi
+//    }
+//
+//    /** Write a Drawable to a file as a PNG. */
+//    def write(file: java.io.File): Unit = {
+//      ImageIO.write(asBufferedImage, "png", file)
+//    }
+//  }
+//}

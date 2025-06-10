@@ -91,7 +91,7 @@ case class ContinuousAxisDescriptor(
   val axisBounds: Bounds = Bounds(tickMin, tickMax)
 
   // Avoid bad number formatting resulting from NaNs.
-  val numFrac: Int = {
+  lazy val numFrac: Int = {
     if (!(tickMin.isNaN && tickMax.isNaN) && spacing > 0)
       math.max(-math.floor(math.log10(spacing)), 0).toInt
     else 0
@@ -135,7 +135,7 @@ object AxisDescriptor {
     nf * math.pow(10, expv)
   }
 
-  def createNumericLabel(num: Double, numFrac: Int): String = {
+ def createNumericLabel(num: Double, numFrac: Int): String = {
     require(
       numFrac >= 0 && numFrac <= 20,
       "Formatting fewer than 0 " +

@@ -95,7 +95,14 @@ final case class EmptyDrawable() extends Drawable {
   val extent: Extent = Extent(0, 0)
   def draw(context: RenderContext): Unit = ()
 
-  override private[evilplot] def isEmpty: Boolean = true
+  //todo  this is not correct method ,just copy from package, need upgrade
+  def resize(extent: Extent): Drawable = this match {
+//    case Resize(innerR, _) if extent == this.extent => this
+//    case Resize(innerR, _) => Resize(innerR, extent)
+    case _ if extent == this.extent => this
+    case _ => Resize(this, extent)
+  }
+  override def isEmpty: Boolean = true
 }
 object EmptyDrawable {
   implicit val encoder: Encoder[EmptyDrawable] = Encoder[EmptyDrawable] //deriveConfiguredEncoder[EmptyDrawable]

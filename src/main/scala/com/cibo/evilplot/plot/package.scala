@@ -32,6 +32,43 @@ package com.cibo.evilplot
 
 import com.cibo.evilplot.plot.components._
 
+//package plot:
+//  extension (plot: Plot) {
+//    // 这里通过混入特质来添加功能，Scala 3 里扩展方法和特质混合使用
+//    def withAxesImplicits = new Axes.AxesImplicits {
+//      protected val plot: Plot = plot
+//    }
+//    def withPlotLineImplicits = new PlotLineImplicits {
+//      protected val plot: Plot = plot
+//    }
+//    def withAnnotationImplicits = new AnnotationImplicits {
+//      protected val plot: Plot = plot
+//    }
+//    def withBackgroundImplicits = new BackgroundImplicits {
+//      protected val plot: Plot = plot
+//    }
+//    def withBorderPlotImplicits = new BorderPlotImplicits {
+//      protected val plot: Plot = plot
+//    }
+//    def withFacetLabelImplicits = new FacetLabelImplicits {
+//      protected val plot: Plot = plot
+//    }
+//    def withLabelImplicits = new LabelImplicits {
+//      protected val plot: Plot = plot
+//    }
+//    def withLegendImplicits = new LegendImplicits {
+//      protected val plot: Plot = plot
+//    }
+//    def withPadImplicits = new PadImplicits {
+//      protected val plot: Plot = plot
+//    }
+//    def withPlotDefaultsImplicits = new PlotDefaultsImplicits {
+//      protected val plot: Plot = plot
+//    }
+//    def withOverlayImplicits = new OverlayImplicits {
+//      protected val plot: Plot = plot
+//    }
+//  }
 package object plot {
 
   implicit class RichPlot(
