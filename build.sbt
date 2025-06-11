@@ -9,8 +9,8 @@ import Keys.*
 import sbt.Def.settings
 
 import scala.collection.Seq
-
-ThisBuild / tlBaseVersion := "0.0.1" // your current series x.y
+ThisBuild / version := "0.0.2"
+ThisBuild / tlBaseVersion := "0.0.2" // your current series x.y
 //ThisBuild / CoursierCache := file("D:\\coursier")
 ThisBuild / organization := "io.github.mullerhai" //"dev.storch"
 ThisBuild / organizationName := "storch.dev"
@@ -20,8 +20,6 @@ ThisBuild / developers := List(
   // your GitHub handle and name
   tlGitHubDev("mullerhai", "mullerhai")
 )
-ThisBuild / version := "0.0.1"
-
 ThisBuild / scalaVersion := "3.6.4"
 ThisBuild / tlSonatypeUseLegacyHost := false
 
@@ -77,7 +75,7 @@ ThisBuild  / assemblyMergeStrategy := {
 }
 // https://mvnrepository.com/artifact/com.google.code.gson/gson
 libraryDependencies += "com.google.code.gson" % "gson" % "2.13.1"
-
+libraryDependencies += "org.scala-lang.modules" % "scala-swing_3" % "3.0.0"
 // https://mvnrepository.com/artifact/io.github.mullerhai/storch-numpy
 libraryDependencies += "io.github.mullerhai" %% "storch-numpy" % "0.1.0"
 // https://mvnrepository.com/artifact/io.circe/circe-parser
@@ -94,6 +92,7 @@ libraryDependencies += ("com.chuusai" %% "shapeless" % "2.3.13") cross CrossVers
 libraryDependencies += ("io.circe" %% "circe-generic-extras" % "0.14.5-RC1") cross CrossVersion.for3Use2_13 cross CrossVersion.for3Use2_13 exclude ("io.circe","circe-core_2.13") exclude ("io.circe","circe-numbers_2.13") exclude ("io.circe","circe-generic_2.13") exclude ("org.typelevel","cats-kernel_2.13") exclude ("org.typelevel","cats-core_2.13")
 libraryDependencies += "org.scalanlp" %% "breeze" % "2.1.0"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.3.0-alpha.1" % Test
+libraryDependencies += "jfree" % "jfreechart" % "1.0.13"
 //libraryDependencies += "io.circe" %%% "circe-generic-extras" % "0.15.0-M1" //5-RC1"
 //#######################"io.circe" %%% "circe-generic-extras" % "0.14.4"
 // https://mvnrepository.com/artifact/io.circe/circe-derivation
