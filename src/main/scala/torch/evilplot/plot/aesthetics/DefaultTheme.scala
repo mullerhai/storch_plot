@@ -35,6 +35,7 @@ import torch.evilplot.colors.ContinuousColoring.gradient
 import torch.evilplot.colors.{Clear, GradientMode, HEX, HSLA, HTMLNamedColors, RGB}
 import torch.evilplot.geometry.LineStyle
 
+class DefaultTheme
 object DefaultTheme {
   private val darkGray: HSLA = HSLA(0, 0, 12, 1.0)
   private val lightGray: HSLA = HSLA(0, 0, 65, 0.8)
