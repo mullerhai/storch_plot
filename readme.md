@@ -10,7 +10,7 @@ Storch Plot is a powerful plotting library written in Scala 3, designed to be a 
 ```scala 3
 sbt compile
 
-libraryDependencies += "io.github.mullerhai" % "storch-plot_3" % "0.0.2"
+libraryDependencies += "io.github.mullerhai" % "storch-plot_3" % "0.0.3"
 
 ```
 ## Visual Examples
