@@ -1,11 +1,8 @@
-import torch.evilplot.colors.Color
-import torch.evilplot.colors.HTMLNamedColors.{green, red}
-import torch.evilplot.geometry.Extent
-import torch.evilplot.plot.*
-import torch.evilplot.numeric.{Bounds, Point}
-import torch.evilplot.plot.*
-import torch.evilplot.plot.aesthetics.DefaultTheme.*
-import torch.evilplot.plot.renderers.{BarRenderer, PathRenderer}
+import torch.utils.plot.colors.HTMLNamedColors.{green, red}
+import torch.utils.plot.numeric.{Bounds, Point}
+import torch.utils.plot.service.renderers.{BarRenderer, PathRenderer}
+import torch.utils.plot.colors.Color
+import torch.utils.plot.geometry.Extent
 
 import scala.util.Random
 
@@ -81,9 +78,9 @@ object boxbar extends App{
 
 //object scatterplot extends App{
 //
-//  import torch.evilplot.numeric._
-//  import torch.evilplot.plot._
-//  import torch.evilplot.plot.renderers.PointRenderer
+//  import torch.utils.plot.numeric._
+//  import torch.utils.plot.plot._
+//  import torch.utils.plot.plot.renderers.PointRenderer
 //
 //  val points = Seq.fill(150) {
 //    Point(Random.nextDouble(), Random.nextDouble())

@@ -1,15 +1,10 @@
-import torch.evilplot._
-import torch.evilplot.geometry._
 
-import torch.evilplot._
-import torch.evilplot.plot._
-import torch.evilplot.plot.aesthetics.DefaultTheme._
-import torch.evilplot.numeric.Point
+import torch.utils.plot.numeric.Point
 import scala.swing._
 import scala.swing.event._
 import java.awt.{Graphics2D, Color, geom}
 
-object EvilPlot {
+object utils.plot {
   val data = Seq.tabulate(100) { i =>
     Point(i.toDouble, scala.util.Random.nextDouble())
   }
@@ -25,7 +20,7 @@ object SwingApp extends SimpleSwingApplication {
 
     override def paintComponent(g: Graphics2D): Unit = {
       super.paintComponent(g)
-      g.drawImage(EvilPlot.bf, null, 0, 0)
+      g.drawImage(utils.plot.bf, null, 0, 0)
     }
   }
 

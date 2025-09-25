@@ -1,5 +1,3 @@
-import torch.evilplot.plot._
-import torch.evilplot.plot.aesthetics.DefaultTheme._
 object Main extends App {
   def mains(args: Array[String]): Unit = {
 

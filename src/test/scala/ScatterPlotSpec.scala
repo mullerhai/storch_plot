@@ -30,10 +30,10 @@
 //
 //import org.scalatest.funspec.AnyFunSpec
 //import org.scalatest.matchers.should.Matchers
-//import torch.evilplot.numeric.Point
-//import torch.evilplot.plot.ScatterPlot
-//import torch.evilplot.plot.aesthetics.ClassicTheme.classicTheme
-//import torch.evilplot.plot.aesthetics.DefaultTheme.defaultTheme
+//import torch.utils.plot.numeric.Point
+//import torch.utils.plot.plot.ScatterPlot
+//import torch.utils.plot.plot.aesthetics.ClassicTheme.classicTheme
+//import torch.utils.plot.plot.aesthetics.DefaultTheme.defaultTheme
 //
 //class ScatterPlotSpec extends AnyFunSpec with Matchers {
 //

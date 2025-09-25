@@ -9,8 +9,8 @@ import Keys.*
 import sbt.Def.settings
 
 import scala.collection.Seq
-ThisBuild / version := "0.0.2"
-ThisBuild / tlBaseVersion := "0.0.2" // your current series x.y
+ThisBuild / version := "0.0.3"
+ThisBuild / tlBaseVersion := "0.0.3" // your current series x.y
 //ThisBuild / CoursierCache := file("D:\\coursier")
 ThisBuild / organization := "io.github.mullerhai" //"dev.storch"
 ThisBuild / organizationName := "storch.dev"
@@ -77,7 +77,7 @@ ThisBuild  / assemblyMergeStrategy := {
 libraryDependencies += "com.google.code.gson" % "gson" % "2.13.1"
 libraryDependencies += "org.scala-lang.modules" % "scala-swing_3" % "3.0.0"
 // https://mvnrepository.com/artifact/io.github.mullerhai/storch-numpy
-libraryDependencies += "io.github.mullerhai" %% "storch-numpy" % "0.1.0"
+libraryDependencies += "io.github.mullerhai" %% "storch-numpy" % "0.1.7"
 // https://mvnrepository.com/artifact/io.circe/circe-parser
 libraryDependencies += "io.circe" %%% "circe-core" % "0.15.0-M1"
 libraryDependencies += "io.circe" %%% "circe-generic" % "0.15.0-M1"

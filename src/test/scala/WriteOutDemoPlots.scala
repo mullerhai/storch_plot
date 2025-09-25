@@ -1,10 +1,10 @@
 //import java.io.File
 //import java.nio.file.{Files, Paths}
-//import torch.evilplot.demo.DemoPlots
-//import torch.evilplot.asBufferedImage
-//import torch.evilplot.write
+//import torch.utils.plot.demo.DemoPlots
+//import torch.utils.plot.asBufferedImage
+//import torch.utils.plot.write
 //import javax.imageio.ImageIO
-//import torch.evilplot.geometry.Drawable
+//import torch.utils.plot.geometry.Drawable
 //import org.scalatest.funspec.AnyFunSpec
 //import org.scalatest.matchers.should.Matchers
 //
@@ -38,7 +38,7 @@
 //  )
 //
 //  val tmpPathOpt = {
-//    val tmpPath = Paths.get("./tmp/evilplot")
+//    val tmpPath = Paths.get("./tmp/utils.plot")
 //    if (Files.notExists(tmpPath)) Try{Files.createDirectories(tmpPath)}
 //    if(Files.notExists(tmpPath)) None else {
 //      println(s"Saving rendered png's to $tmpPath")

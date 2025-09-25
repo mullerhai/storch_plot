@@ -1,9 +1,9 @@
-import torch.evilplot.colors.RGB
-import torch.evilplot.geometry.{Align, Drawable, Extent, Placeable, Rect, Text}
-import torch.evilplot.plot.*
-import torch.evilplot.plot.aesthetics.DefaultTheme.{DefaultFonts, DefaultTheme}
-import torch.evilplot.plot.aesthetics.Theme
-import torch.evilplot.plot.renderers.BarRenderer
+import torch.utils.plot.geometry.{Align, Drawable, Extent, Placeable, Rect, Text}
+import torch.utils.plot.colors.RGB
+import torch.utils.plot.service.aesthetics.DefaultTheme.{DefaultFonts, DefaultTheme}
+import torch.utils.plot.service.aesthetics.Theme
+import torch.utils.plot.service.renderers.BarRenderer
+
 object barplot extends App {
 
   implicit val theme: Theme = DefaultTheme.copy(

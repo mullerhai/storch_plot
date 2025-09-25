@@ -1,8 +1,6 @@
-import torch.evilplot.colors.HTMLNamedColors
-import torch.evilplot.colors.HTMLNamedColors.*
-import torch.evilplot.numeric.Bounds
-import torch.evilplot.plot.*
-import torch.evilplot.plot.aesthetics.DefaultTheme._
+import torch.utils.plot.colors.HTMLNamedColors
+import torch.utils.plot.numeric.Bounds
+
 object functionPlot extends App {
   Overlay(
     FunctionPlot.series(x => x * x, "y = x^2",

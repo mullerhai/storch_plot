@@ -1,29 +1,21 @@
-import torch.evilplot.colors.RGB
-import torch.evilplot.geometry.Extent
-import torch.evilplot.geometry.LineStyle.DashDot
-import torch.evilplot.geometry.LineStyle
-import torch.evilplot.numeric.Point
-import torch.evilplot.plot._
-import torch.evilplot.plot.renderers.PointRenderer
-import scala.util.Random
-import torch.evilplot.plot.aesthetics.DefaultTheme._
-import scala.math.Ordering
+import torch.utils.plot.geometry.LineStyle.DashDot
+import torch.utils.plot.service.*
 
-import torch.evilplot.colors._
-import torch.evilplot.plot._
-import torch.evilplot.plot.renderers.PointRenderer
-import torch.evilplot.geometry.Extent
-import torch.evilplot.numeric.Point
-import torch.evilplot.numeric.Point3d
-import torch.evilplot.displayPlot
-import torch.evilplot.plot.aesthetics.Theme
-import torch.evilplot.geometry.Drawable
-import torch.evilplot.plot.aesthetics.Fonts
-import torch.evilplot.plot.aesthetics.Colors
-import torch.evilplot.plot.aesthetics.Elements
-import torch.evilplot.asBufferedImage
+import scala.util.Random
+import torch.utils.plot.service.aesthetics.DefaultTheme.*
+
+import scala.math.Ordering
+import torch.utils.plot.colors.*
+import torch.utils.plot.service.*
+import torch.utils.plot.asBufferedImage
 import org.jfree.chart.encoders.EncoderUtil
 import org.apache.commons.codec.binary.Base64
+import torch.utils.plot.colors.{Clear, ContinuousColoring, HEX, HSLA, HTMLNamedColors, RGB}
+import torch.utils.plot.displayPlot
+import torch.utils.plot.geometry.{Drawable, Extent, LineStyle}
+import torch.utils.plot.numeric.{Point, Point3d}
+import torch.utils.plot.service.aesthetics.{Colors, Elements, Fonts, Theme}
+import torch.utils.plot.service.renderers.PointRenderer
 
 // import d3v4._
 //

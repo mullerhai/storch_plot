@@ -1,12 +1,12 @@
-//import torch.evilplot.colors.RGB
-//import torch.evilplot.geometry.Extent
-//import torch.evilplot.geometry.LineStyle.DashDot
-//import torch.evilplot.numeric.Point
-//import torch.evilplot.plot.*
-//import torch.evilplot.plot.renderers.PointRenderer
+//import torch.utils.plot.colors.RGB
+//import torch.utils.plot.geometry.Extent
+//import torch.utils.plot.geometry.LineStyle.DashDot
+//import torch.utils.plot.numeric.Point
+//import torch.utils.plot.plot.*
+//import torch.utils.plot.plot.renderers.PointRenderer
 //
 //import scala.util.Random
-//import torch.evilplot.plot.aesthetics.DefaultTheme._
+//import torch.utils.plot.plot.aesthetics.DefaultTheme._
 //object scatterHigram extends App {
 //
 //  val allYears = (2007 to 2013).map(_.toDouble).toVector
